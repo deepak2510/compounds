@@ -44,6 +44,7 @@
     "highlight.js": "^8.9.1",
     "history": "^1.13.1",
     "html-webpack-plugin": "^1.7.0",
+    "lodash.throttle": "^3.0.4",
     "mocha": "^2.3.4",
     "node-sass": "^3.4.2",
     "portfinder": "^0.4.0",

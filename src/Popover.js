@@ -1,10 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
+import addWindowListeners from './extensions/addWindowListeners';
+import throttle from 'lodash.throttle';
 
 // Heavily inspired by
 // https://github.com/callemall/material-ui/blob/master/src/popover/popover.jsx
 
-export default class Popover extends Component {
+class Popover extends Component {
 
   constructor(props) {
     super(props);
@@ -12,10 +14,16 @@ export default class Popover extends Component {
     this.state = {
       open: this.props.initiallyOpen
     };
+
+    this.setPlacement = throttle(this.setPlacement, props.throttleInterval);
   }
 
   toggle() {
     this.setState({ open: !this.state.open });
+  }
+
+  handleScroll() {
+    console.log('scrolling');
   }
 
   componentDidUpdate() {
@@ -96,8 +104,8 @@ export default class Popover extends Component {
       left: anchor[anchorOrigin.horizontal] - target[targetOrigin.horizontal]
     };
 
-    targetEl.style.top = Math.max(0, targetPosition.top) + 'px';
-    targetEl.style.left = Math.max(0, targetPosition.left) + 'px';
+    targetEl.style.top = Math.ceil(Math.max(0, targetPosition.top)) + 'px';
+    targetEl.style.left = Math.ceil(Math.max(0, targetPosition.left)) + 'px';
     targetEl.style.maxHeight = window.innerHeight + 'px';
   }
 
@@ -114,7 +122,8 @@ Popover.propTypes = {
   targetOrigin: PropTypes.shape({
     horizontal: PropTypes.oneOf(['left', 'middle', 'right']),
     vertical: PropTypes.oneOf(['top', 'center', 'bottom'])
-  })
+  }),
+  throttleInterval: PropTypes.number
 };
 
 Popover.defaultProps = {
@@ -122,5 +131,11 @@ Popover.defaultProps = {
     horizontal: 'left',
     vertical: 'bottom'
   },
-  initiallyOpen: false
+  initiallyOpen: false,
+  throttleInterval: 200
 };
+
+export default addWindowListeners(Popover, {
+  scroll: 'setPlacement',
+  resize: 'setPlacement'
+});
