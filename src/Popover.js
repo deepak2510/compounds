@@ -135,7 +135,7 @@ Popover.defaultProps = {
   throttleInterval: 200
 };
 
-export default addWindowListeners(Popover, {
+export default addWindowListeners({
   scroll: 'setPlacement',
   resize: 'setPlacement'
-});
+})(Popover);

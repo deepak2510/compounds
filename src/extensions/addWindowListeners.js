@@ -1,20 +1,20 @@
 import { Component } from 'react';
 
-const addWindowListeners = (OuterComponent, events) => class extends Component {
+const addWindowListeners = events => WrappedComponent => class extends Component {
 
   constructor(props) {
     super(props);
   }
 
   componentDidMount() {
-    const { outerComponent } = this;
+    const { wrappedComponent } = this;
     const listeners = this.listeners = [];
 
     Object.keys(events).forEach(eventName => {
       const callbackName = events[eventName];
       const listener = {
         eventName,
-        callback: outerComponent[callbackName].bind(outerComponent)
+        callback: wrappedComponent[callbackName].bind(wrappedComponent)
       };
 
       window.addEventListener(listener.eventName, listener.callback);
@@ -29,7 +29,7 @@ const addWindowListeners = (OuterComponent, events) => class extends Component {
   }
 
   render() {
-    return <OuterComponent {...this.props} ref={ref => this.outerComponent = ref} />
+    return <WrappedComponent {...this.props} ref={ref => this.wrappedComponent = ref} />
   }
 
 }
