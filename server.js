@@ -1,23 +1,30 @@
+const browserSync = require('browser-sync');
 const webpack = require('webpack');
-const WebpackDevServer = require('webpack-dev-server');
+const webpackDevMiddleware = require('webpack-dev-middleware');
+const webpackHotMiddleware = require('webpack-hot-middleware');
+
 const config = require('./webpack-dev.config');
-const portfinder = require('portfinder');
+const bundler = webpack(config);
 
-const host = process.env.HOST || 'localhost';
+browserSync({
+  server: {
+    baseDir: 'docs/src/www',
 
-portfinder.getPort((err, port) => {
-  if (err) {
-    throw err;
+    middleware: [
+      webpackDevMiddleware(bundler, {
+        publicPath: config.output.publicPath,
+        stats: { colors: true }
+      }),
+
+      webpackHotMiddleware(bundler)
+    ],
+
+    // Watch these files for changes. No need to watch *.js because
+    // webpack takes care of it for us with hot module replacement,
+    // with fallback to full page reload.
+    files: [
+      'docs/src/www/scss/*.scss',
+      'docs/src/www/*.html'
+    ]
   }
-
-  config.entry = [`webpack-dev-server/client?http://${host}:${port}`].concat(config.entry);
-
-  new WebpackDevServer(webpack(config), config.devServer)
-    .listen(port, host, (err) => {
-      if (err) {
-        throw err;
-      }
-
-      console.log(`Listening at ${host}:${port}`);
-    })
 });

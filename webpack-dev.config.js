@@ -5,11 +5,13 @@ module.exports = {
 
   entry: [
     'webpack/hot/dev-server',
+    'webpack-hot-middleware/client',
     path.join(__dirname, './docs/src/app/app.js')
   ],
 
   output: {
     path: path.join(__dirname, './docs/src/www'),
+    publicPath: '/',
     filename: 'app.js'
   },
 
@@ -22,7 +24,7 @@ module.exports = {
 
   debug: true,
 
-  devtool: 'inline-source-map',
+  devtool: '#eval-source-map',
 
   devServer: {
     contentBase: path.join(__dirname, './docs/src/www'),
@@ -30,7 +32,9 @@ module.exports = {
   },
 
   plugins: [
-    new webpack.HotModuleReplacementPlugin()
+    new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoErrorsPlugin()
   ],
 
   module: {
