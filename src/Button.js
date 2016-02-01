@@ -11,7 +11,7 @@ const BUTTON_SIZES = {
 };
 
 function Button(props) {
-  let classes = ['pe-btn'];
+  var classes = ['pe-btn'];
 
   if (props.type) {
     classes = classes.concat([`pe-btn--${props.type}`]);
