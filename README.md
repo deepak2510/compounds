@@ -1,4 +1,4 @@
-# Core React.js components for Pearson UIs [![Build Status](https://travis-ci.org/Pearson-Higher-Ed/compounds.svg?branch=cmd)](https://travis-ci.org/Pearson-Higher-Ed/compounds)
+# Core React.js components for Pearson UIs [![Build Status](https://travis-ci.org/Pearson-Higher-Ed/compounds.svg?branch=test)](https://travis-ci.org/Pearson-Higher-Ed/compounds)
 
 This module provides a foundational set of React.js components for building a Pearson web UI.
 
